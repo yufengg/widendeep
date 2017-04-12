@@ -1,13 +1,11 @@
 # Wide & Deep with TensorFlow
 
-This directory contains the code for running a Wide and Deep model. It also runs in Cloud ML Engine, using TensorFlow 1.0. This code has been tested on Python 2.7 and 3.5
+This directory contains the code for running a Wide and Deep model. It also runs in Cloud ML Engine. This code has been tested on Python 2.7 but should also run on Python 3.5
 
 # About the dataset and model
 Wide and deep jointly trains wide linear models and deep neural networks -- to combine the benefits of memorization and generalization for recommender systems. See the [research paper](https://arxiv.org/abs/1606.07792) for more details. The code is based on the [TensorFlow wide and deep tutorial](https://www.tensorflow.org/tutorials/wide_and_deep/).
 
-We will use the [Census Income Dataset](https://archive.ics.uci.edu/ml/datasets/Census+Income) to predict the probability that the individual has an annual income of over 50,000 dollars. This data was extracted from the 1994 US Census by Barry Becker. 
-
-The prediction task is to determine whether a person makes over 50K a year.
+We will use the [Kaggle Criteo Dataset](https://www.kaggle.com/c/criteo-display-ad-challenge) to predict the probability that an ad is clicked.
 
 The dataset is downloaded as part of the script (and in the cloud directly uses the copy stored online).
 
@@ -19,7 +17,7 @@ The commands below assume you are in this directory (wide_n_deep).
 You should move to it with `cd workshop_sections/wide_n_deep`
 
 ### Local
-`python widendeep/model.py`
+`python trainer/task.py`
 
 ### Jupyter Notebook
 Run the notebook, and step through the cells.
@@ -29,11 +27,8 @@ Run the notebook, and step through the cells.
 ### Google Cloud Machine Learning Engine
 The workflow to run this on Cloud Machine Learning Engine is to do a local run first, then move to the cloud.
 
-First, let's go to our working directory: 
-`cd workshop_sections/wide_n_deep`
-
 #### Test it locally:
-    $ gcloud ml-engine local train --package-path=widendeep --module-name=widendeep.model
+    $ gcloud ml-engine local train --package-path=trainer --module-name=trainer.task
     TensorFlow version 1.0.0
     model directory = models/model_WIDE_AND_DEEP_1491431579
     estimator built
@@ -59,9 +54,9 @@ Next, set the following environment variables and submit a training job.
     export JOB_NAME=widendeep_${USER}_$(date +%Y%m%d_%H%M%S)
     export TRAIN_PATH=${BUCKET}/${JOB_NAME}
 
-    gcloud ml-engine jobs submit training ${JOB_NAME} --package-path=widendeep --module-name=widendeep.model  --region=us-central1 --job-dir=${TRAIN_PATH} 
+    gcloud ml-engine jobs submit training ${JOB_NAME} --package-path=trainer --module-name=trainer.task  --region=us-central1 --job-dir=${TRAIN_PATH} 
     
-    gcloud ml-engine jobs submit training ${JOB_NAME} --package-path=widendeep --module-name=widendeep.model --job-dir=${TRAIN_PATH} --config config.yaml
+    gcloud ml-engine jobs submit training ${JOB_NAME} --package-path=trainer --module-name=trainer.task --job-dir=${TRAIN_PATH} --config config.yaml
     
 You can check the status of your training job with the command:
 
@@ -73,7 +68,7 @@ To run another job (in your dev workflow), simply set a new `JOB_NAME` and `TRAI
 
     export JOB_NAME=widendeep_${USER}_$(date +%Y%m%d_%H%M%S)
     export TRAIN_PATH=${BUCKET}/${JOB_NAME}
-    gcloud ml-engine jobs submit training ${JOB_NAME} --package-path=widendeep --module-name=widendeep.model  --region=us-central1 --job-dir=${TRAIN_PATH}
+    gcloud ml-engine jobs submit training ${JOB_NAME} --package-path=trainer --module-name=trainer.task  --region=us-central1 --job-dir=${TRAIN_PATH}
 
     
 # Your trained model
