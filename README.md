@@ -55,8 +55,13 @@ Next, set the following environment variables and submit a training job.
     export TRAIN_PATH=${BUCKET}/${JOB_NAME}
 
     gcloud ml-engine jobs submit training ${JOB_NAME} --package-path=trainer --module-name=trainer.task  --region=us-central1 --job-dir=${TRAIN_PATH} 
+
+When you are ready to run it on a more power cluster, you can customize a config.yaml file. Included in this repo are 2 examples, one for the STANDARD_1 sizing, and one custom setup which includes 3 GPU-enabled machines.
     
-    gcloud ml-engine jobs submit training ${JOB_NAME} --package-path=trainer --module-name=trainer.task --job-dir=${TRAIN_PATH} --config config.yaml
+    gcloud ml-engine jobs submit training ${JOB_NAME} --package-path=trainer --module-name=trainer.task --job-dir=${TRAIN_PATH} --config config_standard.yaml
+
+    gcloud ml-engine jobs submit training ${JOB_NAME} --package-path=trainer --module-name=trainer.task --job-dir=${TRAIN_PATH} --config config_gpu.yaml
+    
     
 You can check the status of your training job with the command:
 
