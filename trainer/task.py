@@ -250,10 +250,7 @@ def train_and_eval(job_dir=None):
     experiment_fn = generate_experiment(
       model_dir, train_file, test_file, model_type)
 
-    metrics, output_folder = learn_runner.run(experiment_fn, model_dir)
-
-    print('Accuracy: {}'.format(metrics['accuracy']))
-    print('Model exported to {}'.format(output_folder))
+    learn_runner.run(experiment_fn, model_dir)
 
 
 def version_is_less_than(a, b):
