@@ -2,12 +2,26 @@
 
 This directory contains the code for running a Wide and Deep model. It also runs in Cloud ML Engine. This code has been tested on Python 2.7 but should also run on Python 3.5
 
+Follow along the codelab here: bit.ly/widendeep-slides
+
 # About the dataset and model
 Wide and deep jointly trains wide linear models and deep neural networks -- to combine the benefits of memorization and generalization for recommender systems. See the [research paper](https://arxiv.org/abs/1606.07792) for more details. The code is based on the [TensorFlow wide and deep tutorial](https://www.tensorflow.org/tutorials/wide_and_deep/).
 
 We will use the [Kaggle Criteo Dataset](https://www.kaggle.com/c/criteo-display-ad-challenge) to predict the probability that an ad is clicked.
 
 The dataset is downloaded as part of the script (and in the cloud directly uses the copy stored online).
+
+If you wish to download a copy, the data are located here:
+gs://dataset-uploader/criteo-kaggle/small_version -- 2.5MB, 10K rows
+gs://dataset-uploader/criteo-kaggle/medium_version -- 273MB, 1M rows
+gs://dataset-uploader/criteo-kaggle/large_version  -- 2.7GB, 10M rows
+
+Each folder contains 2 files: train.csv and eval.csv
+
+The command line tool gsutil is part of the Google Cloud SDK, and comes with gcloud.
+No gsutil but still want to download? Replace "gs://" with 'https://storage.googleapis.com/', for example:
+https://storage.googleapis.com/dataset-uploader/criteo-kaggle/small_version/train.csv
+
 
 # Training and evaluation
 This repo presents 3 methods of running the model: locally, on a jupyter notebook, and on Google Cloud ML Engine.
