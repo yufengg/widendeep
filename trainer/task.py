@@ -98,7 +98,8 @@ def build_feature_cols():
 def build_model(model_type, model_dir, wide_columns, deep_columns):
   runconfig = tf.contrib.learn.RunConfig(
     save_checkpoints_secs=120,
-    save_checkpoints_steps = None
+    save_checkpoints_steps = None,
+    gpu_memory_fraction = 0.8
   )
   m = None
   # Linear Classifier
@@ -175,8 +176,9 @@ def serving_input_fn():
     
 def generate_experiment(output_dir, train_file, test_file, model_type):
   def _experiment_fn(output_dir):
-    train_input_fn = generate_input_fn(train_file)
-    eval_input_fn = generate_input_fn(test_file)
+    batch_size = 40 # make it larger for large datasets: 40, 400, 4000
+    train_input_fn = generate_input_fn(train_file, batch_size)
+    eval_input_fn = generate_input_fn(test_file, batch_size)
     my_model = build_estimator(model_type=model_type, 
                                model_dir=output_dir)
 
@@ -205,9 +207,10 @@ def train_and_eval(job_dir=None):
   # Ensure path has a '/' at the end
   if job_dir[-1] != '/': job_dir += '/'
 
-  # dataset-uploader/criteo-kaggle/small_version
   gcs_base = 'https://storage.googleapis.com/' # No need to change
-  gcs_path = 'dataset-uploader/criteo-kaggle/medium_version/' # Path to the folder with the files
+  # small_version, medium_version, large_version
+  # Note: large_version is 2.7GB and medium_version is 273MB
+  gcs_path = 'dataset-uploader/criteo-kaggle/small_version/' # Path to the folder with the files
   trainfile = 'train.csv'
   testfile  = 'eval.csv'
   local_path = 'dataset_files'
